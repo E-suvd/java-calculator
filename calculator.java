@@ -3,8 +3,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class calculator extends JFrame implements ActionListener {
+public class calculator extends JFrame implements ActionListener, KeyListener {
 	static JFrame frame;
 	static String s0, s1, s2;
 	static JTextField txt;
@@ -16,6 +18,16 @@ public class calculator extends JFrame implements ActionListener {
 	private static void createUI(final JFrame frame) {
 		txt = new JTextField(20);
 		txt.setEditable(false);
+		txt.setAlignmentX(RIGHT_ALIGNMENT);
+		txt.setHorizontalAlignment(JTextField.RIGHT);
+		txt.setForeground(Color.PINK);
+		txt.setBackground(Color.decode("#A9A9A9"));
+		
+		Font font1 = new Font("Times New Roman", Font.BOLD, 35);
+		txt.setFont(font1);
+		
+		Font fontBtn = new Font("Times New Roman", Font.BOLD, 25);
+		
 		calculator c = new calculator();
 		
 		JButton b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, bAdd, bSub, bDiv, bMul, bClear, bPoint, bEq;
@@ -37,9 +49,27 @@ public class calculator extends JFrame implements ActionListener {
 		bPoint = new JButton(".");
 		bEq = new JButton("=");
 		
+		b0.setFont(fontBtn);
+		b1.setFont(fontBtn);
+		b2.setFont(fontBtn);
+		b3.setFont(fontBtn);
+		b4.setFont(fontBtn);
+		b5.setFont(fontBtn);
+		b6.setFont(fontBtn);
+		b7.setFont(fontBtn);
+		b8.setFont(fontBtn);
+		b9.setFont(fontBtn);
+		bAdd.setFont(fontBtn);
+		bSub.setFont(fontBtn);
+		bDiv.setFont(fontBtn);
+		bMul.setFont(fontBtn);
+		bClear.setFont(fontBtn);
+		bPoint.setFont(fontBtn);
+		bEq.setFont(fontBtn);
+		
 		
 		JPanel textPanel = new JPanel();
-		textPanel.setLayout(new FlowLayout());
+		textPanel.setLayout(new GridLayout(1, 1));
 		textPanel.add(txt);
 		
 		JPanel buttonPanel = new JPanel();
@@ -65,6 +95,8 @@ public class calculator extends JFrame implements ActionListener {
 		buttonPanel.add(bDiv);
 		buttonPanel.add(bEq);
 		
+		frame.addKeyListener(c);
+		
 		b0.addActionListener(c);
 		b1.addActionListener(c);
 		b2.addActionListener(c);
@@ -83,7 +115,23 @@ public class calculator extends JFrame implements ActionListener {
 		bClear.addActionListener(c);
 		bEq.addActionListener(c);
 		
-		
+		b0.setFocusable(false);
+		b1.setFocusable(false);
+		b2.setFocusable(false);
+		b3.setFocusable(false);
+		b4.setFocusable(false);
+		b5.setFocusable(false);
+		b6.setFocusable(false);
+		b7.setFocusable(false);
+		b8.setFocusable(false);
+		b9.setFocusable(false);
+		bAdd.setFocusable(false);
+		bSub.setFocusable(false);
+		bDiv.setFocusable(false);
+		bMul.setFocusable(false);
+		bPoint.setFocusable(false);
+		bClear.setFocusable(false);
+		bEq.setFocusable(false);
 		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
@@ -97,7 +145,7 @@ public class calculator extends JFrame implements ActionListener {
 	private static void createFrame() {
 		frame = new JFrame("Suvd Calculator");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(250, 350);
+		frame.setSize(400, 500); 
 		frame.setVisible(true);
 		createUI(frame);
 	}
@@ -140,16 +188,16 @@ public class calculator extends JFrame implements ActionListener {
 		else {
 			double result = 0;
 			if(!s1.equals("") && !s2.equals("")) {
-				if(s.equals("+")) {
+				if(s1.equals("+")) {
 					result = Double.parseDouble(s0) + Double.parseDouble(s2);
 				}
-				else if(s.equals("-")) {
+				else if(s1.equals("-")) {
 					result = Double.parseDouble(s0) - Double.parseDouble(s2);
 				}
-				else if(s.equals("*")) {
+				else if(s1.equals("*")) {
 					result = Double.parseDouble(s0) * Double.parseDouble(s2);
 				}
-				else if(s.equals("/")) {
+				else if(s1.equals("/")) {
 					result = Double.parseDouble(s0) / Double.parseDouble(s2);
 				}
 				s0 = Double.toString(result);
@@ -163,6 +211,80 @@ public class calculator extends JFrame implements ActionListener {
 		}
 			
 		
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		char c = e.getKeyChar();
+		int keyInt = e.getKeyCode();
+		if((c >='0' && c <='9') || c == '.') {
+			if(s1.equals("") && s2.equals("")) {
+				s0 = s0 + Character.toString(c);
+			}
+			else if(!s1.equals("")) {
+				s2 = s2 + Character.toString(c);
+			}
+			txt.setText(s0 + s1 + s2);
+		}
+		else if (keyInt == KeyEvent.VK_DELETE) {
+			s0 = s1 = s2 ="";
+			txt.setText(s0 + s1 + s2);
+		}	
+		else if (keyInt == KeyEvent.VK_ENTER || c == '=') {
+			double result = 0;
+			if(s1.equals("+")) {
+				result = Double.parseDouble(s0) + Double.parseDouble(s2);
+			}
+			else if(s1.equals("-")) {
+				result = Double.parseDouble(s0) - Double.parseDouble(s2);
+			}
+			else if(s1.equals("*")) {
+				result = Double.parseDouble(s0) * Double.parseDouble(s2);
+			}
+			else if(s1.equals("/")) {
+				result = Double.parseDouble(s0) / Double.parseDouble(s2);
+			}
+			txt.setText(s0 + s1 + s2 + "=" + Double.valueOf(result));
+		}
+		else {
+			double result = 0;
+			if(!s1.equals("") && !s2.equals("")) {
+				if(s1.equals("+")) {
+					result = Double.parseDouble(s0) + Double.parseDouble(s2);
+				}
+				else if(s1.equals("-")) {
+					result = Double.parseDouble(s0) - Double.parseDouble(s2);
+				}
+				else if(s1.equals("*")) {
+					result = Double.parseDouble(s0) * Double.parseDouble(s2);
+				}
+				else if(s1.equals("/")) {
+					result = Double.parseDouble(s0) / Double.parseDouble(s2);
+				}
+				s0 = Double.toString(result);
+				s2 = "";
+				s1 = Character.toString(c);
+			}
+			else if(!s0.equals("")){
+				if(c == '+' || c == '-' || c == '*' || c == '/')
+				s1 = Character.toString(c);
+			}
+			txt.setText(s0 + s1 + s2);
+		}
+	}
+	
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 
